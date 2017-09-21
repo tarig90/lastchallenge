@@ -11,59 +11,66 @@
 
 </head>
 <body id="teacher-page">
-    <!--Navigation Teacher-->
-    <nav th:replace="base :: nav2Teacher"></nav>
-    <!--/.Navigation Teacher-->
-    <!--style="right-justified"-->
-    <div class="container-loggeduser">
-        Logged user:  <span sec:authentication="name">The Teacher is not logged in yet</span>
+<!--Navigation Teacher-->
+<nav th:replace="base :: nav2Teacher"></nav>
+<!--/.Navigation Teacher-->
+<!--style="right-justified"-->
+
+
+<div class="container-loggeduser">
+    Logged user:  <span sec:authentication="name">The Teacher is not logged in yet</span>
+</div>
+
+<div class="container" >
+    <h1 th:inline="text">[[${instructor.firstName}]] [[${instructor.lastName}]]'s Home Page</h1>
+    <div class="teacherpic" style="border-image-width: 20%">
+        <div th:if="${instructor.headShot}!=null">
+            <img th:src="${instructor.headShot}"/>
+            <hr/>
+        </div>
     </div>
 
-    <div class="container">
-        <h1 th:inline="text">[[${instructor.firstName}]] [[${instructor.lastName}]]'s Home Page</h1>
+    <br/>
+    <!--<p th:text="'Instructor Id: ' + ${instructor.id}"></p>-->
+    <p th:text="'M Number: ' + ${instructor.mNumber}"></p>
+    <p th:text="'Name: ' + ${instructor.firstName} + ' ' +${instructor.lastName} "></p>
+    <p th:text="'Username: ' + ${instructor.username}"></p>
+    <p th:text="'Email: ' + ${instructor.email}"></p>
+    <p><a th:href="@{/teacher/updateperson}">Update</a></p>
+    <!--<p>My Courses links</p>-->
+    <!--<p><a href="/teacher/listallcourses">All my courses</a></p>-->
+
+    <h2>List of Courses</h2>
+    <br/>
+    <div  th:if="${!allcoursesofaInstructor.isEmpty()}">
 
 
-        <br/>
-        <!--<p th:text="'Instructor Id: ' + ${instructor.id}"></p>-->
-        <p th:text="'M Number: ' + ${instructor.mNumber}"></p>
-        <p th:text="'Name: ' + ${instructor.firstName} + ' ' +${instructor.lastName} "></p>
-        <p th:text="'Username: ' + ${instructor.username}"></p>
-        <p th:text="'Email: ' + ${instructor.email}"></p>
-        <p><a th:href="@{/teacher/updateperson}">Update</a></p>
-        <!--<p>My Courses links</p>-->
-        <!--<p><a href="/teacher/listallcourses">All my courses</a></p>-->
-
-        <h2>List of Courses</h2>
-        <br/>
-        <div  th:if="${!allcoursesofaInstructor.isEmpty()}">
-
-
-            <table class="table table-striped" border="1">
-                <tr>
-                    <th>Course Id</th>
-                    <th>Course Name</th>
-                    <th>Course Crn</th>
-                    <th>Active</th>
-                </tr>
-                <tr th:each="item:${allcoursesofaInstructor}">
-                    <td th:text="${item.id}"/>
-                    <td><a th:href="@{/teacher/detailsofacourse/{id} (id=${item.id})}" th:inline="text">[[${item.courseName}]]</a></td>
-                    <td th:text="${item.crn}"/>
-                    <td th:text="${item.status}"/>
-                </tr>
-            </table>
-
-        </div>
-
-        <div  th:if="${allcoursesofaInstructor.isEmpty()}">
-            <h3>You are not assigned to teach any course yet.</h3>
-        </div>
+        <table class="table table-striped" border="1">
+            <tr>
+                <th>Course Id</th>
+                <th>Course Name</th>
+                <th>Course Crn</th>
+                <th>Active</th>
+            </tr>
+            <tr th:each="item:${allcoursesofaInstructor}">
+                <td th:text="${item.id}"/>
+                <td><a th:href="@{/teacher/detailsofacourse/{id} (id=${item.id})}" th:inline="text">[[${item.courseName}]]</a></td>
+                <td th:text="${item.crn}"/>
+                <td th:text="${item.status}"/>
+            </tr>
+        </table>
 
     </div>
 
-    <!-- Footer -->
-    <div th:replace="base :: footer"></div>
-    <!-- /.Footer -->
+    <div  th:if="${allcoursesofaInstructor.isEmpty()}">
+        <h3>You are not assigned to teach any course yet.</h3>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<div th:replace="base :: footer"></div>
+<!-- /.Footer -->
 
 </body>
 </html>

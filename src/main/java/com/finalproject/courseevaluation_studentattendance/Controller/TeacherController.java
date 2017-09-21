@@ -1,6 +1,9 @@
 package com.finalproject.courseevaluation_studentattendance.Controller;
 
+import com.cloudinary.Transformation;
+import com.cloudinary.utils.ObjectUtils;
 import com.fasterxml.jackson.databind.util.ArrayIterator;
+import com.finalproject.courseevaluation_studentattendance.Config.CloudinaryConfig;
 import com.finalproject.courseevaluation_studentattendance.Model.*;
 import com.finalproject.courseevaluation_studentattendance.Repositories.*;
 import com.finalproject.courseevaluation_studentattendance.Services.CourseService;
@@ -23,10 +26,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.mail.internet.InternetAddress;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.security.Principal;
@@ -36,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.logging.SimpleFormatter;
 
 
@@ -73,6 +79,9 @@ public class TeacherController {
 
     @Autowired
     public EmailService emailService;
+
+    @Autowired
+    CloudinaryConfig cloudc;
 
     @RequestMapping("/home")
     public String teacherHome(Principal p, Model model)
@@ -260,17 +269,52 @@ public class TeacherController {
 
     @GetMapping("/updateperson")
     public String editPerson(Principal principal,Model model){
+
         Person instructor=personRepo.findByUsername(principal.getName());
         model.addAttribute("instructor", instructor);
+
+
 
         return "teacherpages/teacheredit";
     }
 
 
     @PostMapping("/updateperson")
-    public String savePerson(@Valid @ModelAttribute("instructor") Person instructor, BindingResult bindingResult)
+    public String savePerson(@Valid @ModelAttribute("instructor") Person instructor, BindingResult bindingResult,@RequestParam("file")MultipartFile file)
     {
 
+
+
+        if (file.isEmpty()) {
+            return "teacherpages/teacheredit";
+        }
+        try {
+            Map uploadResult = cloudc.upload (file.getBytes(),
+                    ObjectUtils.asMap("resourcetype","fixed","tra", new Transformation ().crop("crop").width ( 20 ).height ( 20 )));
+            //set url as headshot
+            instructor.setHeadShot (uploadResult.get("url").toString());
+
+//            Map result = cloudinary.uploader().upload(new File("daisy.png"), ObjectUtils.asMap(
+//                    "public_id", "sample_id",
+//                    "transformation", new Transformation().crop("limit").width(40).height(40),
+//                    "eager", Arrays.asList(
+//                            new Transformation().width(200).height(200)
+//                                    .crop("thumb").gravity("face").radius(20)
+//                                    .effect("sepia"),
+//                            new Transformation().width(100).height(150)
+//                                    .crop("fit").fetchFormat("png")
+//                    ),
+//                    "tags", "special, for_homepage"));
+
+
+
+            personService.update (instructor);
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "redirect:/teacher/home/";
+        }
         personService.update(instructor);
         return "redirect:/teacher/home/";
     }

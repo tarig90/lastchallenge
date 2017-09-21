@@ -51,6 +51,7 @@ public class PersonService {
         }
 
         //start person id, username, and start date will not be changed when updated
+        existingPerson.setHeadShot(person.getHeadShot());
         existingPerson.setmNumber(person.getmNumber());
         existingPerson.setFirstName(person.getFirstName());
         existingPerson.setLastName(person.getLastName());

@@ -16,7 +16,7 @@
 </div>
 <div class="container">
 
-    <form action="#" th:action="@{/teacher/updateperson}" th:object="${instructor}" method="post" >
+    <form action="#" th:action="@{/teacher/updateperson}"  enctype="multipart/form-data" th:object="${instructor}" method="post" >
         <!--<input type="text" th:field="*{perosn.id}" />-->
         <input type="hidden" th:field="*{id}" />
         <input type="hidden" th:field="*{mNumber}" />
@@ -38,7 +38,13 @@
 
         <!--th:text="${#dates.format(link.date, 'MMM dd, yyyy')}"-->
         <!--<p th:text="'Sign up date: ' + ${#dates.format(newstudent.startDate, 'MMM dd, yyyy')}" />-->
+
+        <p>Select a picture of the Instructor</p>
+        <input type="file" name="file" /><br/><br/>
         <p><input type="submit"  value="Submit" class="btn btn-lg btn-default btn-block" /></p>
+
+
+
     </form>
 
 

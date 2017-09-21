@@ -6,6 +6,7 @@ import com.finalproject.courseevaluation_studentattendance.Repositories.PersonRe
 import com.finalproject.courseevaluation_studentattendance.Services.SSPersonDetailsService;
 import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -14,6 +15,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +34,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
     public UserDetailsService userDetailsServiceBean()throws Exception{
         return new SSPersonDetailsService(personRepository);
     }
+
+
 
 
     @Override
@@ -59,4 +64,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 //        auth.inMemoryAuthentication().withUser("ADMIN").password("password").roles("ADMIN");
         auth.userDetailsService(userDetailsServiceBean());
     }
+
+
+
+
 }

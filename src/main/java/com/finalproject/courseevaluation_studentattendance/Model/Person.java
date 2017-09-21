@@ -39,6 +39,8 @@ public class Person {
     // true(active for update) if the student doesn't have an m number, false (inactive) if the student has a M number already
     private Boolean status;
 
+    private String headShot;
+
     public Boolean getStatus() {
         return status;
     }
@@ -233,5 +235,13 @@ public class Person {
 
     public void setCourseStudent(Course courseStudent) {
         this.courseStudent = courseStudent;
+    }
+
+    public String getHeadShot() {
+        return headShot;
+    }
+
+    public void setHeadShot(String headShot) {
+        this.headShot = headShot;
     }
 }

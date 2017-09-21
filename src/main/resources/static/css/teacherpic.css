@@ -1,0 +1,6 @@
+.teacherpic{
+    display: inline;
+    max-height: 20px;
+    max-width: 20px;
+    object-fit: cover;
+}

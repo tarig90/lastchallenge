@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableEmailTools
 public class CourseevaluationStudentattendanceApplication {
 
+
 	public static void main(String[] args) {
 		SpringApplication.run(CourseevaluationStudentattendanceApplication.class, args);
 	}
